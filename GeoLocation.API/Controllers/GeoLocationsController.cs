@@ -29,7 +29,7 @@ namespace GeoLocation.API.Controllers
         }
 
         // GET api/geoLocations/
-        [HttpPost]
+        [HttpGet]
         public async Task<ActionResult> GetAllIpAddresses()
         {
             return Ok(await _ipAddressService.GetAllIpAddresses());

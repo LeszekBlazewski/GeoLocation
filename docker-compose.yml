@@ -1,11 +1,6 @@
 version: '3.4'
 
 services:
-  geolocation.api:
-    image: ${DOCKER_REGISTRY-}geolocationapi
-    build:
-      context: .
-      dockerfile: GeoLocation.API/Dockerfile
 
   mongo:
     image: mongo
@@ -24,5 +19,15 @@ services:
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: root
+    depends_on:
+      - mongo
+
+  geolocation.api:
+    image: ${DOCKER_REGISTRY-}geolocationapi
+    build:
+      context: .
+      dockerfile: GeoLocation.API/Dockerfile
+    environment:
+      MongoDB__Host: mongo
     depends_on:
       - mongo
