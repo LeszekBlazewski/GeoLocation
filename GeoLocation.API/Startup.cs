@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using GeoLocation.BL.RepositoryInterfaces;
 using GeoLocation.BL.Services;
 using GeoLocation.BL.Services.ServicesInterfaces;
@@ -10,13 +6,11 @@ using GeoLocation.DAL.Configs;
 using GeoLocation.DAL.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using AutoMapper;
 
 namespace GeoLocation.API
 {
@@ -46,6 +40,8 @@ namespace GeoLocation.API
             services.AddSingleton<IIpAddressDetailsService>(ipAddressDetailsService);
 
             services.AddScoped<IIpStackService, IpStackService>();
+
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddControllers();
 

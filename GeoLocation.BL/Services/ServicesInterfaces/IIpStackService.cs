@@ -1,15 +1,13 @@
 ﻿using Models;
-using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace GeoLocation.BL.Services.ServicesInterfaces
 {
     public interface IIpStackService
     {
-        public IpAddressDetails GetIpAddressDetails(string ipAddress);
+        public IpAddressDetails GetIpAddressDetails(string address, [Optional] string fields, [Optional] bool includeHostname, [Optional] bool includeSecurity, [Optional] string language);
 
-        public IpAddressDetails GetIpAddressDetails(List<string> ipAddresses);
+        public IpAddressDetails GetIpAddressDetails(IEnumerable<string> ipAddresses);
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
+using GeoLocation.BL.Properties;
 using GeoLocation.BL.RepositoryInterfaces;
 using Models;
 
@@ -25,21 +25,27 @@ namespace GeoLocation.BL.Services.ServicesInterfaces
 
         public async Task<bool> DeleteIpAddress(long id)
         {
+            var ipAddressFromDatabase = await _ipAddressDetailsRepository.GetIpAddressDetail(id);
+
+            if (ipAddressFromDatabase == null)
+                throw new InvalidOperationException(Resources.DeleteGeoLocationAddressExcpetion);
+
             return await _ipAddressDetailsRepository.Delete(id);
         }
 
-        public async Task<IEnumerable<IpAddressDetails>> GetAllIpAddresses()
-        {
-            return await _ipAddressDetailsRepository.GetAllIpAddresses();
-        }
+        public async Task<IEnumerable<IpAddressDetails>> GetAllIpAddresses() => await _ipAddressDetailsRepository.GetAllIpAddresses();
 
-        public async Task<IpAddressDetails> GetIpAddressDetail(long id)
-        {
-            return await _ipAddressDetailsRepository.GetIpAddressDetail(id);
-        }
+        public async Task<IpAddressDetails> GetIpAddressDetail(long id) => await _ipAddressDetailsRepository.GetIpAddressDetail(id);
 
         public async Task<bool> UpdateIpAddress(IpAddressDetails ipAddressDetail)
         {
+            var ipAddressFromDatabase = await _ipAddressDetailsRepository.GetIpAddressDetail(ipAddressDetail.Id);
+
+            if (ipAddressFromDatabase == null)
+                throw new InvalidOperationException(Resources.UpdateGeoLocationAddressException);
+
+            ipAddressDetail.DatabaseId = ipAddressFromDatabase.DatabaseId;
+
             return await _ipAddressDetailsRepository.Update(ipAddressDetail);
         }
     }

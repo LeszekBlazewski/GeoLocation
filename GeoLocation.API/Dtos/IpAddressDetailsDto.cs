@@ -1,18 +1,12 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using Models;
 
-namespace Models
+namespace GeoLocation.API.Dtos
 {
-    public class IpAddressDetails
+    public class IpAddressDetailsDto
     {
-
-        [BsonId]
-        public ObjectId DatabaseId { get; set; }
-
         public long Id { get; set; }
 
         public string Ip { get; set; }
-
 
         public string Hostname { get; set; }
 
@@ -50,7 +44,7 @@ namespace Models
 
         public Location Location { get; set; }
 
-        public TimeZone TimeZone { get; set; }
+        public Models.TimeZone TimeZone { get; set; }
 
 
         public Currency Currency { get; set; }

@@ -1,5 +1,6 @@
 ﻿using GeoLocation.BL.RepositoryInterfaces;
 using Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -31,15 +32,15 @@ namespace GeoLocation.DAL.Repositories
         {
             var updateResult = await _context.GeoLocations.ReplaceOneAsync(ip => ip.Id == ipAddressDetail.Id, ipAddressDetail);
 
-            return updateResult.IsAcknowledged;
+            return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
         }
 
         public async Task<bool> Delete(long id)
         {
             var deleteResult = await _context.GeoLocations.DeleteOneAsync(Builders<IpAddressDetails>.Filter.Eq(ip => ip.Id, id));
-            return deleteResult.IsAcknowledged;
+            return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
         }
 
-        public async Task<long> GetNextAvailableId() => await _context.GeoLocations.CountDocumentsAsync(null) + 1;
+        public async Task<long> GetNextAvailableId() => await _context.GeoLocations.CountDocumentsAsync(new BsonDocument()) + 1;
     }
 }

@@ -1,4 +1,5 @@
-﻿using GeoLocation.BL.Services.ServicesInterfaces;
+﻿using GeoLocation.BL.Extenstions;
+using GeoLocation.BL.Services.ServicesInterfaces;
 using Microsoft.Extensions.Configuration;
 using Models;
 using RestSharp;
@@ -6,8 +7,8 @@ using RestSharp.Deserializers;
 using RestSharp.Serialization.Json;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace GeoLocation.BL.Services
 {
@@ -22,16 +23,41 @@ namespace GeoLocation.BL.Services
             _apiAccessKey = configuration.GetSection("IpStackAccessKey").Value;
         }
 
-        public IpAddressDetails GetIpAddressDetails(string ipAddress)
+        public IpAddressDetails GetIpAddressDetails(string address, [Optional] string fields, [Optional] bool includeHostname, [Optional] bool includeSecurity, [Optional] string language)
         {
+            // check if valid ip address has been provided
+            if (!IPAddress.TryParse(address, out IPAddress ipAddress))
+            {
+                // if not try to get ip address from Uri
+                address = Dns.GetHostAddresses(new Uri(address).Host)[0].ToString();
+            }
+
             var request = new RestRequest();
-            request.AddParameter("IpAddress", ipAddress, ParameterType.UrlSegment);
+            request.AddParameter("IpAddress", address, ParameterType.UrlSegment);
             request.Resource = "{IpAddress}";
+
+            // Add optional parameters
+            if (fields != null)
+            {
+                request.AddParameter("fields", fields);
+            }
+            if (includeHostname)
+            {
+                request.AddParameter("hostname", includeHostname.ConvertToInt());
+            }
+            if (includeSecurity)
+            {
+                request.AddParameter("security", includeSecurity.ConvertToInt());
+            }
+            if (!string.IsNullOrEmpty(language))
+            {
+                request.AddParameter("language", language);
+            }
 
             return Execute<IpAddressDetails>(request);
         }
 
-        public IpAddressDetails GetIpAddressDetails(List<string> ipAddresses)
+        public IpAddressDetails GetIpAddressDetails(IEnumerable<string> ipAddresses)
         {
             var request = new RestRequest();
             request.AddParameter("IpAddress", string.Join(",", ipAddresses), ParameterType.UrlSegment);
