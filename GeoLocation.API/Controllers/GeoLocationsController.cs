@@ -76,9 +76,10 @@ namespace GeoLocation.API.Controllers
             {
                 var ipAddressDetails = _ipStackService.GetIpAddressDetails(
                                         ipAddressQuery.Address,
-                                        fields: null,   // this ensures that all data will be provided from ipStack API
+                                        fields: ipAddressQuery.Fields,
                                         ipAddressQuery.IncludeHostName,
-                                        ipAddressQuery.IncludeSecurity);
+                                        ipAddressQuery.IncludeSecurity,
+                                        ipAddressQuery.Language);
 
 
                 await _ipAddressService.AddGeoLocationData(ipAddressDetails);
