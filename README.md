@@ -42,5 +42,6 @@ Wrong inputs are handled accordingly. Same functionality as in IpStack Api.
 * NUnit
 * Moq
 * Automapper
+* Azure CI
 
 Everything is build build upon containers. You can also find basic unit tests with mocks. Decided to go with Mongo becuase it can be simply dockerized, stores data in JSON so there is no need to further process the data. Included error handling for situations described in the provided document.
