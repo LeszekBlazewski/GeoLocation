@@ -1,4 +1,4 @@
-# GeoLocation
+# GeoLocation[![Build Status](https://dev.azure.com/blazewskileszek/AcornShowcase/_apis/build/status/LeszekBlazewski.GeoLocation?branchName=master)](https://dev.azure.com/blazewskileszek/AcornShowcase/_build/latest?definitionId=12&branchName=master)
 
 Api which provides GeoLocationData retrived from IpStack. Build on ASP .NET CORE 3.0 and MongoDb.
 
