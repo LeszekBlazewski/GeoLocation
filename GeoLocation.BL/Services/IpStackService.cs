@@ -26,7 +26,7 @@ namespace GeoLocation.BL.Services
         public IpAddressDetails GetIpAddressDetails(string address, [Optional] string fields, [Optional] bool includeHostname, [Optional] bool includeSecurity, [Optional] string language)
         {
             // check if valid ip address has been provided
-            if (!IPAddress.TryParse(address, out IPAddress ipAddress))
+            if (!IPAddress.TryParse(address, out _))
             {
                 // if not try to get ip address from Uri
                 address = Dns.GetHostAddresses(new Uri(address).Host)[0].ToString();
@@ -79,7 +79,7 @@ namespace GeoLocation.BL.Services
 
             if (response.ErrorException != null)
             {
-                const string message = "Error retrieving response. Check inner details for more info.";
+                const string message = "Error retrieving response from Ipstack API.";
                 throw new ApplicationException(message, response.ErrorException);
             }
 

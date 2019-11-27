@@ -16,16 +16,16 @@ namespace GeoLocation.BL.Services.ServicesInterfaces
             _ipAddressDetailsRepository = ipAddressDetailsRepository;
         }
 
-        public async Task AddIpAddress(IpAddressDetails ipAddressDetail)
+        public async Task AddGeoLocationData(IpAddressDetails ipAddressDetail)
         {
             ipAddressDetail.Id = await _ipAddressDetailsRepository.GetNextAvailableId();
 
             await _ipAddressDetailsRepository.Add(ipAddressDetail);
         }
 
-        public async Task<bool> DeleteIpAddress(long id)
+        public async Task<bool> DeleteGeoLocationData(long id)
         {
-            var ipAddressFromDatabase = await _ipAddressDetailsRepository.GetIpAddressDetail(id);
+            var ipAddressFromDatabase = await _ipAddressDetailsRepository.GetById(id);
 
             if (ipAddressFromDatabase == null)
                 throw new InvalidOperationException(Resources.DeleteGeoLocationAddressExcpetion);
@@ -33,13 +33,13 @@ namespace GeoLocation.BL.Services.ServicesInterfaces
             return await _ipAddressDetailsRepository.Delete(id);
         }
 
-        public async Task<IEnumerable<IpAddressDetails>> GetAllIpAddresses() => await _ipAddressDetailsRepository.GetAllIpAddresses();
+        public async Task<IEnumerable<IpAddressDetails>> GetAllGeoLocationData() => await _ipAddressDetailsRepository.GetAll();
 
-        public async Task<IpAddressDetails> GetIpAddressDetail(long id) => await _ipAddressDetailsRepository.GetIpAddressDetail(id);
+        public async Task<IpAddressDetails> GetGeoLocationDataById(long id) => await _ipAddressDetailsRepository.GetById(id);
 
-        public async Task<bool> UpdateIpAddress(IpAddressDetails ipAddressDetail)
+        public async Task<bool> UpdateGeoLocationData(IpAddressDetails ipAddressDetail)
         {
-            var ipAddressFromDatabase = await _ipAddressDetailsRepository.GetIpAddressDetail(ipAddressDetail.Id);
+            var ipAddressFromDatabase = await _ipAddressDetailsRepository.GetById(ipAddressDetail.Id);
 
             if (ipAddressFromDatabase == null)
                 throw new InvalidOperationException(Resources.UpdateGeoLocationAddressException);

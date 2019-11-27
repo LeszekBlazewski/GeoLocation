@@ -20,9 +20,9 @@ namespace GeoLocation.DAL.Repositories
 
         public async Task Add(IpAddressDetails ipAddressDetail) => await _context.GeoLocations.InsertOneAsync(ipAddressDetail);
 
-        public async Task<IEnumerable<IpAddressDetails>> GetAllIpAddresses() => await _context.GeoLocations.AsQueryable().ToListAsync();
+        public async Task<IEnumerable<IpAddressDetails>> GetAll() => await _context.GeoLocations.AsQueryable().ToListAsync();
 
-        public Task<IpAddressDetails> GetIpAddressDetail(long id)
+        public Task<IpAddressDetails> GetById(long id)
         {
             FilterDefinition<IpAddressDetails> filter = Builders<IpAddressDetails>.Filter.Eq(ip => ip.Id, id);
             return _context.GeoLocations.Find(filter).FirstOrDefaultAsync();

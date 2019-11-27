@@ -6,7 +6,6 @@ using GeoLocation.API.Dtos;
 using GeoLocation.API.Queries;
 using GeoLocation.BL.Services.ServicesInterfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Models;
 
 namespace GeoLocation.API.Controllers
@@ -15,21 +14,18 @@ namespace GeoLocation.API.Controllers
     [Route("api/[controller]")]
     public class GeoLocationsController : ControllerBase
     {
-        private readonly ILogger<GeoLocationsController> _logger;
-
         private readonly IIpAddressDetailsService _ipAddressService;
 
         private readonly IIpStackService _ipStackService;
 
         private readonly IMapper _mapper;
 
-        public GeoLocationsController(ILogger<GeoLocationsController> logger,
+        public GeoLocationsController(
             IIpAddressDetailsService ipAddressService,
             IIpStackService ipStackService,
             IMapper mapper
             )
         {
-            _logger = logger;
             _ipAddressService = ipAddressService;
             _ipStackService = ipStackService;
             _mapper = mapper;
@@ -41,7 +37,7 @@ namespace GeoLocation.API.Controllers
         {
             try
             {
-                var geoLocationData = await _ipAddressService.GetAllIpAddresses();
+                var geoLocationData = await _ipAddressService.GetAllGeoLocationData();
 
                 return Ok(_mapper.Map<IEnumerable<IpAddressDetailsDto>>(geoLocationData));
 
@@ -58,7 +54,7 @@ namespace GeoLocation.API.Controllers
         {
             try
             {
-                var ipAddressDetails = await _ipAddressService.GetIpAddressDetail(id);
+                var ipAddressDetails = await _ipAddressService.GetGeoLocationDataById(id);
 
                 if (ipAddressDetails == null)
                     return NotFound();
@@ -85,7 +81,7 @@ namespace GeoLocation.API.Controllers
                                         ipAddressQuery.IncludeSecurity);
 
 
-                await _ipAddressService.AddIpAddress(ipAddressDetails);
+                await _ipAddressService.AddGeoLocationData(ipAddressDetails);
 
                 return Ok(_mapper.Map<IpAddressDetailsDto>(ipAddressDetails));
             }
@@ -101,7 +97,7 @@ namespace GeoLocation.API.Controllers
         {
             try
             {
-                await _ipAddressService.DeleteIpAddress(id);
+                await _ipAddressService.DeleteGeoLocationData(id);
                 return Ok();
             }
             catch (Exception ex)
@@ -115,7 +111,7 @@ namespace GeoLocation.API.Controllers
         {
             try
             {
-                await _ipAddressService.UpdateIpAddress(_mapper.Map<IpAddressDetails>(ipAddressDetailsDto));
+                await _ipAddressService.UpdateGeoLocationData(_mapper.Map<IpAddressDetails>(ipAddressDetailsDto));
                 return Ok();
             }
             catch (Exception ex)
